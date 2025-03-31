@@ -1,23 +1,41 @@
-#!/usr/bin/env node
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js"
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
+import { z } from "zod"
 
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { createServer } from "./everything.js";
+// Create an MCP server
+const server = new McpServer({
+  name: "Demo",
+  version: "1.0.0"
+})
 
-async function main() {
-  const transport = new StdioServerTransport();
-  const { server, cleanup } = createServer();
+// Simple tool with parameters
+server.tool(
+  "calculate-bmi",
+  "description",
+  {
+    weightKg: z.number(),
+    heightM: z.number()
+  },
+  async ({ weightKg, heightM }: { weightKg: number, heightM: number }) => ({
+    content: [{
+      type: "text",
+      text: String(weightKg / (heightM * heightM))
+    }]
+  })
+)
 
-  await server.connect(transport);
+// Dynamic resource with parameters
+server.resource(
+  "greeting",
+  new ResourceTemplate("greeting://{name}", { list: undefined }),
+  async (uri, { name }) => ({
+    contents: [{
+      uri: uri.href,
+      text: `Hello, ${name}!`
+    }]
+  })
+)
 
-  // Cleanup on exit
-  process.on("SIGINT", async () => {
-    await cleanup();
-    await server.close();
-    process.exit(0);
-  });
-}
-
-main().catch((error) => {
-  console.error("Server error:", error);
-  process.exit(1);
-});
+// Start receiving messages on stdin and sending messages on stdout
+const transport = new StdioServerTransport()
+await server.connect(transport)
