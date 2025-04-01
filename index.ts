@@ -1,22 +1,24 @@
-import { EpubFile, EpubSpine, EpubToc, initEpubFile } from "@lingo-reader/epub-parser"
-import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js"
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
-import { z } from "zod"
-import { flatToc } from "./utils.js"
-import { readFileSync } from "node:fs"
+import type { EpubFile, EpubSpine, EpubToc } from '@lingo-reader/epub-parser'
+import { readFileSync } from 'node:fs'
+import process from 'node:process'
+import { initEpubFile } from '@lingo-reader/epub-parser'
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
+import { z } from 'zod'
+import { flatToc } from './utils.js'
 
 // Create an MCP server
 const server = new McpServer({
-  name: "Read content from epub file.",
-  version: "0.0.2"
+  name: 'Read content from epub file.',
+  version: '0.0.2',
 })
 
 let epubFile: EpubFile
 let toc: EpubToc
 let spine: EpubSpine
 server.tool(
-  "resetOrInitEpub",
-  "initialize or reset the epub file",
+  'resetOrInitEpub',
+  'initialize or reset the epub file',
   {
     filePath: z.string(),
   },
@@ -31,19 +33,19 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: `Epub file initialized from ${filePath}`
-        }]
+          text: `Epub file initialized from ${filePath}`,
+        }],
       }
     }
     catch (e) {
       return {
         content: [{
-          type: "text",
-          text: `Error initializing epub file: ${e}`
-        }]
+          type: 'text',
+          text: `Error initializing epub file: ${e}`,
+        }],
       }
     }
-  }
+  },
 )
 
 server.tool(
@@ -55,61 +57,62 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     return {
-      content: spine.map((item) => ({
+      content: spine.map(item => ({
         type: 'text',
-        text: JSON.stringify(item)
-      }))
+        text: JSON.stringify(item),
+      })),
     }
-  }
+  },
 )
 
 server.tool(
   'load chapter',
   'load the chapter of the initialized epub file',
   {
-    chapterId: z.string()
+    chapterId: z.string(),
   },
   async ({ chapterId }: { chapterId: string }) => {
     if (!epubFile) {
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     try {
       const { css, html } = await epubFile.loadChapter(chapterId)
       return {
         content: [
-          ...css.map((item) => ({
+          ...css.map(item => ({
             type: 'resource' as const,
             resource: {
               text: readFileSync(item.href, 'utf-8'),
               uri: item.href,
-              mimeType: 'text/css'
-            }
+              mimeType: 'text/css',
+            },
           })),
           {
             type: 'text' as const,
-            text: html
-          }
-        ]
+            text: html,
+          },
+        ],
       }
-    } catch (e) {
+    }
+    catch (e) {
       return {
         content: [{
           type: 'text',
-          text: `Error loading chapter ${chapterId}: ${e}`
-        }]
+          text: `Error loading chapter ${chapterId}: ${e}`,
+        }],
       }
     }
-  }
+  },
 )
 
 server.tool(
@@ -121,18 +124,18 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     const flattedToc = flatToc(toc)
     return {
-      content: flattedToc.map((item) => ({
+      content: flattedToc.map(item => ({
         type: 'text',
-        text: JSON.stringify(item)
-      }))
+        text: JSON.stringify(item),
+      })),
     }
-  }
+  },
 )
 
 server.tool(
@@ -144,18 +147,18 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     const metadata = epubFile.getMetadata()
     return {
       content: [{
         type: 'text',
-        text: JSON.stringify(metadata)
-      }]
+        text: JSON.stringify(metadata),
+      }],
     }
-  }
+  },
 )
 
 server.tool(
@@ -167,18 +170,18 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     const manifest = epubFile.getManifest()
     return {
       content: [{
         type: 'text',
-        text: JSON.stringify(manifest)
-      }]
+        text: JSON.stringify(manifest),
+      }],
     }
-  }
+  },
 )
 
 server.tool(
@@ -190,18 +193,18 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     const collection = epubFile.getCollection()
     return {
       content: [{
         type: 'text',
-        text: JSON.stringify(collection)
-      }]
+        text: JSON.stringify(collection),
+      }],
     }
-  }
+  },
 )
 
 server.tool(
@@ -213,18 +216,18 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     const navList = epubFile.getNavList()
     return {
       content: [{
         type: 'text',
-        text: JSON.stringify(navList)
-      }]
+        text: JSON.stringify(navList),
+      }],
     }
-  }
+  },
 )
 
 server.tool(
@@ -236,18 +239,18 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     const pageList = epubFile.getPageList()
     return {
       content: [{
         type: 'text',
-        text: JSON.stringify(pageList)
-      }]
+        text: JSON.stringify(pageList),
+      }],
     }
-  }
+  },
 )
 
 server.tool(
@@ -259,20 +262,19 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized'
-        }]
+          text: 'Epub file not initialized',
+        }],
       }
     }
     const fileInfo = epubFile.getFileInfo()
     return {
       content: [{
         type: 'text',
-        text: JSON.stringify(fileInfo)
-      }]
+        text: JSON.stringify(fileInfo),
+      }],
     }
-  }
+  },
 )
-
 
 // process.on("SIGINT", () => {
 //   epubFile.destroy()
@@ -332,6 +334,12 @@ server.tool(
 //   })
 // )
 
-// Start receiving messages on stdin and sending messages on stdout
-const transport = new StdioServerTransport()
-await server.connect(transport)
+async function runServer() {
+  const transport = new StdioServerTransport()
+  await server.connect(transport)
+}
+
+runServer().catch((e) => {
+  console.error('Fatal error running server:', e)
+  process.exit(1)
+})

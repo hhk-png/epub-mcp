@@ -1,12 +1,12 @@
 {
   "name": "mcp-epub",
+  "type": "module",
   "version": "0.0.2",
   "description": "mcp about load content from epub file",
-  "license": "MIT",
   "author": "hhk-png <fangluoabc@163.com>",
+  "license": "MIT",
   "homepage": "https://github.com/hhk-png/mcp-epub",
   "bugs": "https://github.com/hhk-png/mcp-epub/issues",
-  "type": "module",
   "bin": {
     "mcp-server-everything": "dist/index.js"
   },

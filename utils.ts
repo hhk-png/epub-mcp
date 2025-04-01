@@ -1,4 +1,4 @@
-import { EpubToc } from "@lingo-reader/epub-parser"
+import type { EpubToc } from '@lingo-reader/epub-parser'
 
 export function flatToc(toc: EpubToc): EpubToc {
   const flat: EpubToc = []
