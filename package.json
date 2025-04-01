@@ -20,6 +20,7 @@
     "inspect": "pnpm exec mcp-inspector start"
   },
   "dependencies": {
+    "@lingo-reader/epub-parser": "^0.2.3",
     "@modelcontextprotocol/sdk": "1.7.0",
     "express": "^4.21.1",
     "zod": "^3.23.8",
