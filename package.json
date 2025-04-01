@@ -2,11 +2,15 @@
   "name": "mcp-epub",
   "type": "module",
   "version": "0.0.3",
+  "packageManager": "pnpm@10.7.0",
   "description": "mcp about load content from epub file",
   "author": "hhk-png <fangluoabc@163.com>",
   "license": "MIT",
   "homepage": "https://github.com/hhk-png/mcp-epub",
   "bugs": "https://github.com/hhk-png/mcp-epub/issues",
+  "engines": {
+    "node": ">=18"
+  },
   "bin": {
     "mcp-epub": "dist/index.js"
   },
