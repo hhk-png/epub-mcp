@@ -27,10 +27,19 @@
     "zod-to-json-schema": "^3.23.5"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^4.11.0",
     "@modelcontextprotocol/inspector": "^0.7.0",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.14",
+    "lint-staged": "^15.5.0",
     "shx": "^0.3.4",
+    "simple-git-hooks": "^2.12.1",
     "typescript": "^5.6.2"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint . --fix --cache"
   }
 }
