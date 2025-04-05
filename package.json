@@ -1,19 +1,19 @@
 {
-  "name": "mcp-epub",
+  "name": "epub-mcp",
   "type": "module",
   "version": "0.0.3",
   "packageManager": "pnpm@10.7.0",
   "description": "mcp about load content from epub file",
   "author": "hhk-png <fangluoabc@163.com>",
   "license": "MIT",
-  "homepage": "https://github.com/hhk-png/mcp-epub",
+  "homepage": "https://github.com/hhk-png/epub-mcp",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hhk-png/mcp-epub"
+    "url": "https://github.com/hhk-png/epub-mcp"
   },
-  "bugs": "https://github.com/hhk-png/mcp-epub/issues",
+  "bugs": "https://github.com/hhk-png/epub-mcp/issues",
   "bin": {
-    "mcp-epub": "dist/index.js"
+    "epub-mcp": "dist/index.mjs"
   },
   "files": [
     "dist"
@@ -22,7 +22,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "unbuild",
     "start": "node dist/index.js",
     "start:sse": "node dist/sse.js",
     "inspect": "pnpm exec mcp-inspector start",
@@ -47,7 +47,8 @@
     "lint-staged": "^15.5.0",
     "shx": "^0.3.4",
     "simple-git-hooks": "^2.12.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "unbuild": "^3.5.0"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

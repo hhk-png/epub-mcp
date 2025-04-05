@@ -1,20 +1,21 @@
-import type { EpubFile, EpubSpine, EpubToc } from '@lingo-reader/epub-parser'
+import type { EpubFile, EpubSpine, NavPoint } from '@lingo-reader/epub-parser'
 import { readFileSync } from 'node:fs'
 import process from 'node:process'
 import { initEpubFile } from '@lingo-reader/epub-parser'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod'
-import { flatToc } from './utils.js'
+import pkg from '../package.json'
+import { flatToc } from './utils'
 
 // Create an MCP server
 const server = new McpServer({
   name: 'Read content from epub file.',
-  version: '0.0.2',
+  version: pkg.version,
 })
 
 let epubFile: EpubFile
-let toc: EpubToc
+let toc: Omit<NavPoint, 'children'>[]
 let spine: EpubSpine
 server.tool(
   'resetOrInitEpub',
@@ -28,12 +29,12 @@ server.tool(
         epubFile.destroy()
       }
       epubFile = await initEpubFile(filePath, './images')
-      toc = epubFile.getToc()
+      toc = flatToc(epubFile.getToc())
       spine = epubFile.getSpine()
       return {
         content: [{
           type: 'text',
-          text: `Epub file initialized from ${filePath}`,
+          text: `Epub file successfully initialized from ${filePath}`,
         }],
       }
     }
@@ -41,7 +42,7 @@ server.tool(
       return {
         content: [{
           type: 'text',
-          text: `Error initializing epub file: ${e}`,
+          text: `Error initializing epub file: ${filePath} \nwith error: ${e}`,
         }],
       }
     }
@@ -49,8 +50,9 @@ server.tool(
 )
 
 server.tool(
-  'get spine',
-  'get the spine of the initialized epub file',
+  'get <spine>',
+  'Get the spine of the initialized epub file, which represents the reading order of the book.'
+  + 'The id of the spine item is chapterId',
   {},
   () => {
     if (!spine) {
@@ -128,9 +130,8 @@ server.tool(
         }],
       }
     }
-    const flattedToc = flatToc(toc)
     return {
-      content: flattedToc.map(item => ({
+      content: toc.map(item => ({
         type: 'text',
         text: JSON.stringify(item),
       })),
@@ -255,7 +256,7 @@ server.tool(
 
 server.tool(
   'getFileInfo',
-  'get the file info of the initialized epub file',
+  'Get the file info of the initialized epub file, which includes the mime type and the file name',
   {},
   () => {
     if (!epubFile) {
@@ -276,15 +277,6 @@ server.tool(
   },
 )
 
-// process.on("SIGINT", () => {
-//   epubFile.destroy()
-//   console.log("SIGINT received, shutting down...")
-//   server.close().then(() => {
-//     console.log("Server closed.")
-//     process.exit(0)
-//   })
-// })
-
 /*
   tool:
     resetOrInitEpub(filePath: string, resourceSaveDir?: string): void
@@ -303,36 +295,6 @@ server.tool(
   other:
     destroy
     */
-
-// // Simple tool with parameters
-// server.tool(
-//   "calculate-bmi",
-//   "description",
-//   {
-//     weightKg: z.number(),
-//     heightM: z.number()
-//   },
-//   async ({ weightKg, heightM }: { weightKg: number, heightM: number }) => {
-//     return {
-//       content: [{
-//         type: "text",
-//         text: String(weightKg / (heightM * heightM))
-//       }]
-//     }
-//   }
-// )
-
-// // Dynamic resource with parameters
-// server.resource(
-//   "greeting",
-//   new ResourceTemplate("greeting://{name}", { list: undefined }),
-//   async (uri, { name }) => ({
-//     contents: [{
-//       uri: uri.href,
-//       text: `Hello, ${name}!`
-//     }]
-//   })
-// )
 
 async function runServer() {
   const transport = new StdioServerTransport()
