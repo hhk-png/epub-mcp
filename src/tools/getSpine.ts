@@ -1,29 +1,30 @@
-import type { ToolParamsObject } from './tool'
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { getEpubFile } from '../epub'
 
-export const getSpine: ToolParamsObject = {
-  name: 'get spine',
-  description: 'Get the spine of the initialized epub file, which represents the reading order of the book.'
-    + 'The id of the spine item is chapterId',
-  inputSchema: {},
-  cb: () => {
-    const epub = getEpubFile()
-    const spine = epub?.getSpine()
+export function addGetSpineTool(server: McpServer) {
+  server.tool(
+    'get spine',
+    'get the spine of the initialized epub file',
+    {},
+    () => {
+      const epub = getEpubFile()
+      const spine = epub?.getSpine()
 
-    if (!spine) {
+      if (!spine) {
+        return {
+          content: [{
+            type: 'text',
+            text: 'Epub file not initialized',
+          }],
+        }
+      }
+
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized',
+          text: JSON.stringify(spine),
         }],
       }
-    }
-
-    return {
-      content: spine.map(item => ({
-        type: 'text',
-        text: JSON.stringify(item),
-      })),
-    }
-  },
+    },
+  )
 }

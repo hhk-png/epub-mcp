@@ -1,22 +1,22 @@
-import type { ToolParamsObject } from './tool'
-import { getCollection } from './getCollection'
-import { getManifest } from './getManifest'
-import { getMetadata } from './getMetadata'
-import { getNavList } from './getNavList'
-import { getPageList } from './getPageList'
-import { getSpine } from './getSpine'
-import { getToc } from './getToc'
-import { loadChapter } from './loadChapter'
-import { resetOrInitEpub } from './resetOrInitEpub'
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+import { addGetCollectionTool } from './getCollection'
+import { addGetManifestTool } from './getManifest'
+import { addGetMetadataTool } from './getMetadata'
+import { addGetNavListTool } from './getNavList'
+import { addGetPageListTool } from './getPageList'
+import { addGetSpineTool } from './getSpine'
+import { addGetTocTool } from './getToc'
+import { addLoadChapterTool } from './loadChapter'
+import { addResetOrInitEpubTool } from './resetOrInitEpub'
 
-export const tools: ToolParamsObject[] = [
-  resetOrInitEpub,
-  loadChapter,
-  getSpine,
-  getToc,
-  getMetadata,
-  getManifest,
-  getCollection,
-  getNavList,
-  getPageList,
-]
+export function addTools(server: McpServer) {
+  addResetOrInitEpubTool(server)
+  addGetSpineTool(server)
+  addLoadChapterTool(server)
+  addGetTocTool(server)
+  addGetMetadataTool(server)
+  addGetManifestTool(server)
+  addGetCollectionTool(server)
+  addGetNavListTool(server)
+  addGetPageListTool(server)
+}

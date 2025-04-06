@@ -1,26 +1,28 @@
-import type { ToolParamsObject } from './tool'
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { getEpubFile } from '../epub'
 
-export const getNavList: ToolParamsObject = {
-  name: 'get nav list',
-  description: 'get the nav list of the initialized epub file',
-  inputSchema: {},
-  cb: () => {
-    const epub = getEpubFile()
-    const navList = epub?.getNavList()
-    if (!navList) {
+export function addGetNavListTool(server: McpServer) {
+  server.tool(
+    'get nav list',
+    'get the nav list of the initialized epub file',
+    {},
+    () => {
+      const epub = getEpubFile()
+      const navList = epub?.getNavList()
+      if (!navList) {
+        return {
+          content: [{
+            type: 'text',
+            text: 'Epub file not initialized',
+          }],
+        }
+      }
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized',
+          text: JSON.stringify(navList),
         }],
       }
-    }
-    return {
-      content: [{
-        type: 'text',
-        text: JSON.stringify(navList),
-      }],
-    }
-  },
+    },
+  )
 }

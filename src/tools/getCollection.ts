@@ -1,27 +1,29 @@
-import type { ToolParamsObject } from './tool'
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { getEpubFile } from '../epub'
 
-export const getCollection: ToolParamsObject = {
-  name: 'get collection',
-  description: 'get the collection of the initialized epub file',
-  inputSchema: {},
-  cb: () => {
-    const epub = getEpubFile()
-    const collection = epub?.getCollection()
+export function addGetCollectionTool(server: McpServer) {
+  server.tool(
+    'get collection',
+    'get the collection of the initialized epub file',
+    {},
+    () => {
+      const epub = getEpubFile()
+      const collection = epub?.getCollection()
 
-    if (!collection) {
+      if (!collection) {
+        return {
+          content: [{
+            type: 'text',
+            text: 'Epub file not initialized',
+          }],
+        }
+      }
       return {
         content: [{
           type: 'text',
-          text: 'Epub file not initialized',
+          text: JSON.stringify(collection),
         }],
       }
-    }
-    return {
-      content: [{
-        type: 'text',
-        text: JSON.stringify(collection),
-      }],
-    }
-  },
+    },
+  )
 }

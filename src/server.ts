@@ -1,5 +1,5 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
-import { tools } from './tools/index'
+import { addTools } from './tools/index'
 
 // Create an MCP server
 const mcpServer = new McpServer({
@@ -7,13 +7,7 @@ const mcpServer = new McpServer({
   version: '0.0.2',
 })
 
-tools.forEach((tool) => {
-  mcpServer.tool(
-    tool.name,
-    tool.description,
-    tool.inputSchema,
-    tool.cb,
-  )
-})
+// Add tools to the server
+addTools(mcpServer)
 
 export default mcpServer
