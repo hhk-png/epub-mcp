@@ -1,14 +1,14 @@
 import type { ToolParamsObject } from './tool'
 import { getEpubFile } from '../epub'
 
-export const getManifest: ToolParamsObject = {
-  name: 'get manifest',
-  description: 'get the manifest of the initialized epub file',
+export const getPageList: ToolParamsObject = {
+  name: 'get page list',
+  description: 'get the page list of the initialized epub file',
   inputSchema: {},
   cb: () => {
     const epub = getEpubFile()
-    const manifest = epub?.getManifest()
-    if (!manifest) {
+    const pageList = epub?.getPageList()
+    if (!pageList) {
       return {
         content: [{
           type: 'text',
@@ -19,7 +19,7 @@ export const getManifest: ToolParamsObject = {
     return {
       content: [{
         type: 'text',
-        text: JSON.stringify(manifest),
+        text: JSON.stringify(pageList),
       }],
     }
   },

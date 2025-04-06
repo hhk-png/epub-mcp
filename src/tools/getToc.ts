@@ -5,7 +5,7 @@ import { flatToc } from '../utils'
 export const getToc: ToolParamsObject = {
   name: 'get table of contents',
   description: 'get the table of contents of the initialized epub file',
-  schema: {},
+  inputSchema: {},
   cb: () => {
     const epub = getEpubFile()
     const toc = epub?.getToc()

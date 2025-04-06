@@ -11,7 +11,7 @@ tools.forEach((tool) => {
   mcpServer.tool(
     tool.name,
     tool.description,
-    tool.schema,
+    tool.inputSchema,
     tool.cb,
   )
 })

@@ -5,7 +5,7 @@ export type TupleToObject<T extends any[]> =
     ? {
         name: Name
         description: Description
-        schema: Schema
+        inputSchema: Schema
         cb: Cb
       }
     : never

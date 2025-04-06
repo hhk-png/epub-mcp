@@ -6,7 +6,7 @@ import { destroyEpubFile, existsEpubFile, setEpubFile } from '../epub'
 export const resetOrInitEpub: ToolParamsObject = {
   name: 'resetOrInitEpub',
   description: 'initialize or reset the epub file',
-  schema: {
+  inputSchema: {
     filePath: z.string(),
   },
   cb: async ({ filePath }) => {

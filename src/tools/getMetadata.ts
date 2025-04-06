@@ -4,7 +4,7 @@ import { getEpubFile } from '../epub'
 export const getMetadata: ToolParamsObject = {
   name: 'get metadata',
   description: 'get the metadata of the initialized epub file',
-  schema: {},
+  inputSchema: {},
   cb: () => {
     const epub = getEpubFile()
     const metadata = epub?.getMetadata()

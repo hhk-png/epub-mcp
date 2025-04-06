@@ -1,6 +1,9 @@
 import type { ToolParamsObject } from './tool'
+import { getCollection } from './getCollection'
 import { getManifest } from './getManifest'
 import { getMetadata } from './getMetadata'
+import { getNavList } from './getNavList'
+import { getPageList } from './getPageList'
 import { getSpine } from './getSpine'
 import { getToc } from './getToc'
 import { loadChapter } from './loadChapter'
@@ -13,4 +16,7 @@ export const tools: ToolParamsObject[] = [
   getToc,
   getMetadata,
   getManifest,
+  getCollection,
+  getNavList,
+  getPageList,
 ]

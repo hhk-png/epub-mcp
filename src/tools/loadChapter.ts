@@ -6,7 +6,7 @@ import { getEpubFile } from '../epub'
 export const loadChapter: ToolParamsObject = {
   name: 'load chapter',
   description: 'load the chapter of the initialized epub file',
-  schema: {
+  inputSchema: {
     chapterId: z.string(),
   },
   cb: async ({ chapterId }) => {
