@@ -6,7 +6,7 @@ import { destroyEpubFile, existsEpubFile, setEpubFile } from '../epub'
 export function addResetOrInitEpubTool(server: McpServer) {
   server.tool(
     'reset or init epub',
-    'initialize or reset the epub file',
+    'Initialize or reset the epub file. This tool must be called before any other tool that uses the epub file.',
     {
       filePath: z.string(),
     },
