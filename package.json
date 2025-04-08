@@ -1,7 +1,7 @@
 {
   "name": "epub-mcp",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "packageManager": "pnpm@10.7.0",
   "description": "mcp about load content from epub file",
   "author": "hhk-png <fangluoabc@163.com>",
@@ -12,9 +12,20 @@
     "url": "https://github.com/hhk-png/epub-mcp"
   },
   "bugs": "https://github.com/hhk-png/epub-mcp/issues",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.mjs"
+    }
+  },
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "bin": {
     "epub-mcp": "dist/index.mjs"
   },
+  "browser": "dist/index.mjs",
   "files": [
     "dist"
   ],
