@@ -1,8 +1,62 @@
-<center><h2><a href="./README-zh.md">中文文档</a></h2><center>
+<a href="./README-zh.md">中文文档链接</a>
 
 This project is an MCP related to EPUB files, providing an MCP tool for reading EPUB file contents.
 
-**reset or init epub（initEpubFile）**
+### Usage
+
+the mcpServers configuration of [cline](https://cline.bot/):
+
+```json
+{
+  "mcpServers": {
+    "epub-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "epub-mcp"
+      ]
+    }
+  }
+}
+```
+
+In windows env, we can use the following configuration:
+
+```json
+{
+  "mcpServers": {
+    "epub-mcp": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "epub-mcp"
+      ]
+    }
+  }
+}
+```
+
+But the most reliable configuration is to use node to execute the corresponding file directly:
+
+```json
+{
+  "mcpServers": {
+    "epub-mcp": {
+      "command": "node",
+      "args": [
+        // the install path of `epub-mcp`
+        "<Installation Directory>\\node_modules\\epub-mcp\\dist\\index.mjs"
+      ]
+    }
+  }
+}
+```
+
+### Tools
+
+#### **reset or init epub（initEpubFile）**
 
 **Parameters：**
 
@@ -12,23 +66,23 @@ This project is an MCP related to EPUB files, providing an MCP tool for reading 
 
 - void
 
-**get collection-（getCollection）**
+#### **get collection-（getCollection）**
 
-**get file info-（getFileInfo）**
+#### **get file info-（getFileInfo）**
 
-**get manifest-（getManifest）**
+#### **get manifest-（getManifest）**
 
-**get metadata-（getMetadata）**
+#### **get metadata-（getMetadata）**
 
-**get nav list-（getNavList）**
+#### **get nav list-（getNavList）**
 
-**get page list-（getPageList）**
+#### **get page list-（getPageList）**
 
-**get spine-（getSpine）**
+#### **get spine-（getSpine）**
 
-**get table of contents-（getToc）**
+#### **get table of contents-（getToc）**
 
-**load chapter-（loadChapter）**
+#### **load chapter-（loadChapter）**
 
 **Parameters：**
 
